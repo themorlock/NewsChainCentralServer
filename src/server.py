@@ -8,7 +8,9 @@ peer_addresses = set()
 @app.route('/get_peer_addresses', methods=['GET'])
 def home():
     return_peer_addresses = list(peer_addresses).copy()
-    return_peer_addresses.remove(flask.request.remote_addr)
+    client_address = flask.request.remote_addr
+    if client_address in return_peer_addresses:
+        return_peer_addresses.remove(client_address)
     peer_addresses.add(flask.request.remote_addr)
     return flask.jsonify(return_peer_addresses)
 
